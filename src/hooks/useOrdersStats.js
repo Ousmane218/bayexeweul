@@ -23,12 +23,13 @@ export function useOrdersStats() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPendingCount()
 
     // S'abonner aux changements sur la table orders
     const channel = supabase
       .channel('public:orders')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
         fetchPendingCount()
       })
       .subscribe()

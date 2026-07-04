@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Heart, ShoppingCart, Trash2, ArrowLeft } from "lucide-react"
+import { Heart, ShoppingCart, Trash2 } from "lucide-react"
 import { useWishlist } from "@/context/WishlistContext"
 import { useCart } from "@/context/CartContext"
 
@@ -18,14 +18,20 @@ export default function ClientWishlistPage() {
   return (
     <div className="bg-premium-bg min-h-[70vh] py-12">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center mb-8">
-          <Link to="/account" className="text-gray-500 hover:text-navy mr-4 transition-colors">
-            <ArrowLeft size={20} />
+        <div className="flex items-center text-sm text-gray-500 mb-6 font-medium">
+          <Link to="/" className="hover:text-navy transition-colors flex items-center">
+             Accueil
           </Link>
-          <div>
-            <h1 className="text-3xl font-serif font-bold text-navy">Mes favoris</h1>
-            <p className="text-gray-500 mt-1">Retrouvez les produits que vous avez mis de côté</p>
-          </div>
+          <span className="mx-2 text-gray-300">/</span>
+          <Link to="/account" className="hover:text-navy transition-colors">
+            Mon compte
+          </Link>
+          <span className="mx-2 text-gray-300">/</span>
+          <span className="text-navy">Favoris</span>
+        </div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-serif font-bold text-navy">Mes favoris</h1>
+          <p className="text-gray-500 mt-1">Retrouvez les produits que vous avez mis de côté</p>
         </div>
 
         {wishlistItems.length === 0 ? (
@@ -36,7 +42,7 @@ export default function ClientWishlistPage() {
             <h2 className="text-2xl font-bold text-navy mb-4">Votre liste de souhaits est vide</h2>
             <p className="text-gray-500 mb-8 max-w-md mx-auto">Vous n'avez pas encore ajouté de produits à vos favoris. Parcourez notre catalogue pour trouver votre bonheur !</p>
             <Link to="/" className="bg-navy text-white px-8 py-3 rounded-xl font-medium hover:bg-navy-hover transition-colors">
-              Découvrir nos produits
+              Découvrir la boutique
             </Link>
           </div>
         ) : (

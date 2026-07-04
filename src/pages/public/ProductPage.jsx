@@ -81,12 +81,7 @@ export default function ProductPage() {
               </Link>
               <span className="mx-2">/</span>
             </>
-          ) : (
-             <>
-               <span>Sans catégorie</span>
-               <span className="mx-2">/</span>
-             </>
-          )}
+          ) : null}
           <span className="text-navy font-medium truncate">{product.name}</span>
         </div>
       </div>

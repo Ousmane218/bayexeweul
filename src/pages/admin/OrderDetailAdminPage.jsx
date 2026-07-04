@@ -12,10 +12,6 @@ export default function OrderDetailAdminPage() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
 
-  useEffect(() => {
-    fetchOrderDetails()
-  }, [id])
-
   const fetchOrderDetails = async () => {
     try {
       setLoading(true)
@@ -46,6 +42,12 @@ export default function OrderDetailAdminPage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchOrderDetails()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
 
   const handleStatusChange = async (newStatus) => {
     try {
@@ -144,16 +146,7 @@ export default function OrderDetailAdminPage() {
     )
   }
 
-  const getStatusIcon = (status) => {
-    switch(status) {
-      case 'pending': return <Clock size={20} className="text-orange-500" />
-      case 'confirmed': return <CheckCircle2 size={20} className="text-blue-500" />
-      case 'processing': return <Package size={20} className="text-purple-500" />
-      case 'delivered': return <Truck size={20} className="text-green-500" />
-      case 'cancelled': return <XCircle size={20} className="text-red-500" />
-      default: return <Clock size={20} className="text-gray-500" />
-    }
-  }
+
 
   const getStatusColorClass = (status) => {
     switch(status) {
@@ -232,7 +225,16 @@ export default function OrderDetailAdminPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center text-sm text-gray-500 font-medium mb-2">
+        <Link to="/" className="hover:text-navy transition-colors">Accueil</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin" className="hover:text-navy transition-colors">Administration</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin/orders" className="hover:text-navy transition-colors">Commandes</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <span className="text-navy truncate max-w-[200px]">#{order.id.substring(0, 8).toUpperCase()}</span>
+      </div>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
           <Link to="/admin/orders" className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-gray-500 hover:text-navy hover:border-navy transition-colors">
             <ArrowLeft size={20} />

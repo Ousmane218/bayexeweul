@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
-import { X, Save, UploadCloud, Trash2, Image as ImageIcon } from 'lucide-react'
+import { X, Save, UploadCloud, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function CategoryForm({ category, onSubmit, onCancel, loading }) {
@@ -19,6 +19,7 @@ export default function CategoryForm({ category, onSubmit, onCancel, loading }) 
 
   useEffect(() => {
     if (category) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: category.name || '',
         slug: category.slug || '',

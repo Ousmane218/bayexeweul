@@ -266,12 +266,20 @@ export default function SearchPage() {
                  <p className="text-gray-500 max-w-sm mb-6">
                     Essayez de modifier vos critères de recherche ou de retirer certains filtres.
                  </p>
-                 <button 
-                  onClick={resetFilters}
-                  className="bg-navy text-white px-6 py-2.5 rounded-lg font-medium hover:bg-navy-hover transition-colors"
-                 >
-                   Réinitialiser les filtres
-                 </button>
+                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+                   <button 
+                    onClick={resetFilters}
+                    className="bg-white border-2 border-navy text-navy px-6 py-2.5 rounded-lg font-medium hover:bg-beige-100 transition-colors"
+                   >
+                     Réinitialiser les filtres
+                   </button>
+                   <Link 
+                    to="/categories"
+                    className="bg-navy text-white px-6 py-2.5 rounded-lg font-medium hover:bg-navy-hover transition-colors flex items-center justify-center"
+                   >
+                     Voir toutes les catégories
+                   </Link>
+                 </div>
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

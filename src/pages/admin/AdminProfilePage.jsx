@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Save, X, User } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function AdminProfilePage() {
   const { profile, user, refreshProfile } = useAuth()
@@ -14,6 +15,7 @@ export default function AdminProfilePage() {
 
   useEffect(() => {
     if (profile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFullName(profile.full_name || "")
     }
   }, [profile])
@@ -78,8 +80,16 @@ export default function AdminProfilePage() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-premium-border overflow-hidden">
-      <div className="p-6 md:p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+    <div className="space-y-6">
+      <div className="flex items-center text-sm text-gray-500 mb-2 font-medium">
+        <Link to="/" className="hover:text-navy transition-colors">Accueil</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin" className="hover:text-navy transition-colors">Administration</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <span className="text-navy">Mon Profil</span>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-premium-border overflow-hidden">
+        <div className="p-6 md:p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
         <div>
           <h1 className="text-2xl font-bold text-navy mb-1">Mon Profil</h1>
           <p className="text-sm text-gray-500">Gérez vos informations personnelles</p>
@@ -182,6 +192,7 @@ export default function AdminProfilePage() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   )
 }

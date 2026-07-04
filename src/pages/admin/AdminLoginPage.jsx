@@ -62,6 +62,7 @@ export default function AdminLoginPage() {
       // car le onAuthStateChange de useAuth va aussi se déclencher.
       navigate("/admin", { replace: true })
     } catch (err) {
+      console.error(err)
       setError("Identifiants incorrects ou erreur de connexion.")
       setLoading(false)
     }

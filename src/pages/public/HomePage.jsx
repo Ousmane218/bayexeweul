@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { useCategories } from "@/hooks/useCategories"
 import { useProducts } from "@/hooks/useProducts"
 import { useSEO } from "@/hooks/useSEO"
 import ProductCard from "@/components/product/ProductCard"
 import { 
-  Truck, ShieldCheck, ThumbsUp, Headset,
-  Shirt, User, Baby, Gem, Diamond, FlaskConical, 
-  Briefcase, Footprints, ShoppingBag, Smartphone, 
-  Laptop, Cpu, Home, Utensils, Moon, Globe, Car,
-  MessageCircle, Star, ShoppingCart
+  Truck, ShieldCheck, Headset,
+  MessageCircle, Star
 } from "lucide-react"
 
 // Fallback icon for categories without images

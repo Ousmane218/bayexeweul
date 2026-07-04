@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Plus, ArrowLeft } from "lucide-react"
+import { Link } from "react-router-dom"
 import { useAdminProducts } from "@/hooks/useAdminProducts"
 import { useToast } from "@/context/ToastContext"
 import ProductTable from "@/components/admin/ProductTable"
@@ -56,6 +57,7 @@ export default function ProductsAdminPage() {
       await deleteProduct(id, imageUrl)
       addToast("Produit supprimé avec succès", "success")
     } catch (err) {
+      console.error(err)
       addToast("Erreur lors de la suppression du produit", "error")
     }
   }
@@ -95,6 +97,13 @@ export default function ProductsAdminPage() {
 
   return (
     <div className="animate-in fade-in duration-300">
+      <div className="flex items-center text-sm text-gray-500 mb-6 font-medium">
+        <Link to="/" className="hover:text-navy transition-colors">Accueil</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin" className="hover:text-navy transition-colors">Administration</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <span className="text-navy">Produits</span>
+      </div>
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-navy">Gestion des Produits</h1>

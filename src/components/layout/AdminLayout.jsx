@@ -17,7 +17,6 @@ export default function AdminLayout() {
   }
 
   const displayName = profile?.full_name || "Administrateur"
-  const userInitial = displayName.charAt(0).toUpperCase()
   const userEmail = user?.email || "admin@bayexeweul.com"
 
   return (

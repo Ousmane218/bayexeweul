@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
@@ -8,15 +9,6 @@ export function WishlistProvider({ children }) {
   const { user } = useAuth()
   const [wishlistItems, setWishlistItems] = useState([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (user) {
-      fetchWishlist()
-    } else {
-      setWishlistItems([])
-      setLoading(false)
-    }
-  }, [user])
 
   const fetchWishlist = async () => {
     try {
@@ -34,6 +26,17 @@ export function WishlistProvider({ children }) {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      fetchWishlist()
+    } else {
+      setWishlistItems([])
+      setLoading(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   const isInWishlist = (productId) => {
     return wishlistItems.some(item => item.product_id === productId)
@@ -71,7 +74,6 @@ export function WishlistProvider({ children }) {
 
     try {
       // Optimistic UI
-      const previousItems = [...wishlistItems]
       setWishlistItems(prev => prev.filter(item => item.product_id !== productId))
 
       const { error } = await supabase

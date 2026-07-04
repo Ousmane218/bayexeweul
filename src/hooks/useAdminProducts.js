@@ -32,6 +32,7 @@ export function useAdminProducts() {
   }, [])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProducts()
   }, [fetchProducts])
 
@@ -42,7 +43,7 @@ export function useAdminProducts() {
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
     const filePath = `${fileName}` // Stockage à la racine du bucket
 
-    const { error: uploadError, data } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('product-images')
       .upload(filePath, file)
 

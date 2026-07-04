@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { supabase } from "@/lib/supabase"
 import { useAuth } from "@/hooks/useAuth"
 import { Link } from "react-router-dom"
-import { Clock, CheckCircle2, Truck, XCircle, Package, ArrowRight, ArrowLeft } from "lucide-react"
+import { Clock, CheckCircle2, Truck, XCircle, Package, ArrowRight } from "lucide-react"
 
 export default function ClientOrdersPage() {
   const { user } = useAuth()
@@ -10,28 +10,28 @@ export default function ClientOrdersPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true)
+        const { data, error } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+        
+        if (error) throw error
+        setOrders(data || [])
+      } catch (error) {
+        console.error("Erreur chargement de l'historique :", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     if (user) {
       fetchOrders()
     }
   }, [user])
-
-  const fetchOrders = async () => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-      
-      if (error) throw error
-      setOrders(data || [])
-    } catch (error) {
-      console.error("Erreur chargement de l'historique :", error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const getStatusBadge = (status) => {
     switch(status) {
@@ -54,10 +54,17 @@ export default function ClientOrdersPage() {
     <div className="bg-premium-bg min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         
-        <Link to="/account" className="text-gray-500 hover:text-navy transition-colors flex items-center mb-6 text-sm w-fit font-medium">
-          <ArrowLeft size={16} className="mr-2" />
-          Retour à mon compte
-        </Link>
+        <div className="flex items-center text-sm text-gray-500 mb-6 font-medium">
+          <Link to="/" className="hover:text-navy transition-colors flex items-center">
+             Accueil
+          </Link>
+          <span className="mx-2 text-gray-300">/</span>
+          <Link to="/account" className="hover:text-navy transition-colors">
+            Mon compte
+          </Link>
+          <span className="mx-2 text-gray-300">/</span>
+          <span className="text-navy">Mes commandes</span>
+        </div>
         
         <div className="mb-8">
           <h1 className="text-3xl font-serif font-bold text-navy mb-2 tracking-tight">Historique de vos commandes</h1>
@@ -77,7 +84,7 @@ export default function ClientOrdersPage() {
               to="/"
               className="inline-flex bg-navy text-white px-8 py-3 rounded-xl font-medium hover:bg-navy-hover transition-colors shadow-md shadow-navy/20"
             >
-              Parcourir la boutique
+              Continuer mes achats
             </Link>
           </div>
         ) : (

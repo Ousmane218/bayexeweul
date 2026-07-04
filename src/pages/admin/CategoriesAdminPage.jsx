@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Plus, Search } from "lucide-react"
+import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useAdminCategories } from "@/hooks/useAdminCategories"
 import { useToast } from "@/context/ToastContext"
@@ -74,6 +75,13 @@ export default function CategoriesAdminPage() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center text-sm text-gray-500 mb-2 font-medium">
+        <Link to="/" className="hover:text-navy transition-colors">Accueil</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin" className="hover:text-navy transition-colors">Administration</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <span className="text-navy">Catégories</span>
+      </div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-navy">Gestion des Catégories</h1>

@@ -8,8 +8,15 @@ export default function CategoriesPage() {
   return (
     <div className="bg-premium-bg min-h-screen">
       {/* Header court */}
-      <div className="bg-navy text-white py-16 mb-8 text-center">
-        <div className="container mx-auto px-4">
+      <div className="bg-navy text-white py-12 mb-8 text-center relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex justify-center items-center text-sm text-gray-300 mb-6 font-medium">
+            <Link to="/" className="hover:text-white transition-colors flex items-center">
+               Accueil
+            </Link>
+            <span className="mx-2 text-gray-500">/</span>
+            <span className="text-white">Catégories</span>
+          </div>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-gold capitalize mb-4">
             Toutes nos catégories
           </h1>
@@ -36,7 +43,10 @@ export default function CategoriesPage() {
                 <LayoutGrid size={32} />
              </div>
              <h3 className="text-xl font-bold text-navy mb-2">Aucune catégorie</h3>
-             <p className="text-gray-500">Les catégories seront bientôt disponibles.</p>
+             <p className="text-gray-500 mb-6">Les catégories seront bientôt disponibles.</p>
+             <Link to="/" className="bg-navy text-white px-8 py-3 rounded-xl font-medium hover:bg-navy-hover transition-colors">
+               Retour à l'accueil
+             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

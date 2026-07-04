@@ -1,5 +1,5 @@
 import { Outlet, Link, useNavigate } from "react-router-dom"
-import { Search, ShoppingCart, Menu, User, Heart, Phone, LogOut, Shield } from "lucide-react"
+import { Search, ShoppingCart, Menu, User, Heart, Phone, LogOut, Shield, Home } from "lucide-react"
 import { useCategories } from "@/hooks/useCategories"
 import { useCart } from "@/context/CartContext"
 import { useAuth } from "@/hooks/useAuth"
@@ -74,7 +74,7 @@ export default function PublicLayout() {
           </div>
 
           {/* Icons - Right */}
-          <div className="flex items-center space-x-5 shrink-0 relative">
+          <div className="hidden md:flex items-center space-x-5 shrink-0 relative">
             {!user ? (
               <Link to="/login" className="flex flex-col items-center text-navy hover:text-gold transition-colors">
                 <User size={22} strokeWidth={1.5} />
@@ -138,9 +138,6 @@ export default function PublicLayout() {
               </div>
               <span className="text-[10px] hidden md:block mt-1 font-medium">Panier</span>
             </Link>
-            <button className="md:hidden text-navy ml-2">
-              <Menu size={24} />
-            </button>
           </div>
         </div>
         
@@ -181,25 +178,29 @@ export default function PublicLayout() {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 pb-16 md:pb-0">
         <Outlet />
       </main>
 
       {/* Footer */}
       <footer className="bg-navy text-white pt-16 pb-8 mt-12">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div>
             <img src="/logo.png" alt={storeConfig.storeName} className="h-16 md:h-20 lg:h-24 w-auto object-contain mb-6" />
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-300 leading-relaxed mb-3">
               {storeConfig.tagline}
+            </p>
+            <p className="text-xs text-white/60 font-medium border-t border-white/10 pt-3 mt-2 inline-block">
+              Une division de <span className="text-white/90 font-bold">As Samadiya Services (A3S SARL)</span>
             </p>
           </div>
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-gray-400">Liens Utiles</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-gray-400">Navigation</h4>
             <ul className="space-y-3 text-sm text-gray-300">
-              <li><Link to="#" className="hover:text-gold transition-colors">À propos de nous</Link></li>
-              <li><Link to="#" className="hover:text-gold transition-colors">Contactez-nous</Link></li>
-              <li><Link to="#" className="hover:text-gold transition-colors">Vendre sur {storeConfig.storeName}</Link></li>
+              <li><Link to="/" className="hover:text-gold transition-colors">Accueil</Link></li>
+              <li><Link to="/categories" className="hover:text-gold transition-colors">Catégories</Link></li>
+              <li><Link to={user ? "/account" : "/login"} className="hover:text-gold transition-colors">Mon compte</Link></li>
+              <li><a href={`https://wa.me/${storeConfig.whatsappDisplay.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="hover:text-gold transition-colors">Contact WhatsApp</a></li>
             </ul>
           </div>
           <div>
@@ -210,29 +211,42 @@ export default function PublicLayout() {
               <li><Link to="#" className="hover:text-gold transition-colors">Méthodes de paiement</Link></li>
             </ul>
           </div>
-          <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-gray-400">Newsletter</h4>
-            <p className="text-sm text-gray-300 mb-4">Recevez nos meilleures offres directement dans votre boîte mail.</p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Email" 
-                className="bg-white/10 border border-white/20 rounded-l-md px-4 py-2 w-full text-sm focus:outline-none focus:border-gold transition-colors text-white placeholder:text-gray-400"
-              />
-              <button className="bg-gold hover:bg-gold-hover text-navy font-bold text-sm px-4 rounded-r-md transition-colors">
-                OK
-              </button>
-            </div>
-          </div>
         </div>
         <div className="container mx-auto px-4 text-center border-t border-white/10 pt-8 text-xs text-gray-400 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>&copy; {new Date().getFullYear()} {storeConfig.storeName}. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} AS SAMADIYA SERVICES. Tous droits réservés.</p>
           <div className="flex space-x-4">
             <Link to="#" className="hover:text-white transition-colors">Conditions d'utilisation</Link>
             <Link to="#" className="hover:text-white transition-colors">Confidentialité</Link>
           </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-safe">
+        <div className="flex justify-around items-center h-16">
+          <Link to="/" className="flex flex-col items-center text-navy hover:text-gold transition-colors w-1/4">
+            <Home size={22} />
+            <span className="text-[10px] mt-1 font-medium">Accueil</span>
+          </Link>
+          <Link to="/categories" className="flex flex-col items-center text-navy hover:text-gold transition-colors w-1/4">
+            <Menu size={22} />
+            <span className="text-[10px] mt-1 font-medium">Catégories</span>
+          </Link>
+          <Link to={user ? "/account" : "/login"} className="flex flex-col items-center text-navy hover:text-gold transition-colors w-1/4 relative">
+            <User size={22} />
+            <span className="text-[10px] mt-1 font-medium">Compte</span>
+          </Link>
+          <Link to="/cart" className="flex flex-col items-center text-navy hover:text-gold transition-colors w-1/4 relative">
+            <div className="relative">
+              <ShoppingCart size={22} />
+              <span className="absolute -top-1.5 -right-2 bg-gold text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            </div>
+            <span className="text-[10px] mt-1 font-medium">Panier</span>
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }

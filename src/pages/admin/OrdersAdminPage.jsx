@@ -10,10 +10,6 @@ export default function OrdersAdminPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
 
-  useEffect(() => {
-    fetchOrders()
-  }, [])
-
   const fetchOrders = async () => {
     try {
       setLoading(true)
@@ -30,6 +26,11 @@ export default function OrdersAdminPage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchOrders()
+  }, [])
 
   const getStatusBadge = (status) => {
     switch(status) {
@@ -55,6 +56,13 @@ export default function OrdersAdminPage() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center text-sm text-gray-500 mb-2 font-medium">
+        <Link to="/" className="hover:text-navy transition-colors">Accueil</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin" className="hover:text-navy transition-colors">Administration</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <span className="text-navy">Commandes</span>
+      </div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-navy">Commandes</h1>

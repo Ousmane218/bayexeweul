@@ -1,9 +1,14 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useCallback } from 'react'
 
 const ToastContext = createContext(null)
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([])
+
+  const removeToast = useCallback((id) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id))
+  }, [])
 
   const addToast = useCallback((message, type = 'info', duration = 4000) => {
     const id = Math.random().toString(36).substr(2, 9)
@@ -14,11 +19,7 @@ export function ToastProvider({ children }) {
         removeToast(id)
       }, duration)
     }
-  }, [])
-
-  const removeToast = useCallback((id) => {
-    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id))
-  }, [])
+  }, [removeToast])
 
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>

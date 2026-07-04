@@ -14,53 +14,53 @@ export default function ClientOrderDetailPage() {
   const [error, setError] = useState("")
 
   useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        setLoading(true)
+        
+        // Récupérer la commande
+        const { data: orderData, error: orderError } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('id', id)
+          .single()
+          
+        if (orderError) throw orderError
+        
+        // Sécurité : Vérifier que la commande appartient bien à l'utilisateur connecté
+        if (orderData.user_id !== user.id) {
+          throw new Error("unauthorized")
+        }
+        
+        // Récupérer les articles
+        const { data: itemsData, error: itemsError } = await supabase
+          .from('order_items')
+          .select(`
+            *,
+            products ( image_url )
+          `)
+          .eq('order_id', id)
+          
+        if (itemsError) throw itemsError
+
+        setOrder(orderData)
+        setOrderItems(itemsData || [])
+      } catch (err) {
+        console.error(err)
+        if (err.message === "unauthorized") {
+          setError("Commande introuvable ou vous n'avez pas l'autorisation de la consulter.")
+        } else {
+          setError("Impossible de charger les détails de la commande.")
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
     if (user && id) {
       fetchOrderDetails()
     }
   }, [user, id])
-
-  const fetchOrderDetails = async () => {
-    try {
-      setLoading(true)
-      
-      // Récupérer la commande
-      const { data: orderData, error: orderError } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('id', id)
-        .single()
-        
-      if (orderError) throw orderError
-      
-      // Sécurité : Vérifier que la commande appartient bien à l'utilisateur connecté
-      if (orderData.user_id !== user.id) {
-        throw new Error("unauthorized")
-      }
-      
-      // Récupérer les articles
-      const { data: itemsData, error: itemsError } = await supabase
-        .from('order_items')
-        .select(`
-          *,
-          products ( image_url )
-        `)
-        .eq('order_id', id)
-        
-      if (itemsError) throw itemsError
-
-      setOrder(orderData)
-      setOrderItems(itemsData || [])
-    } catch (err) {
-      console.error(err)
-      if (err.message === "unauthorized") {
-        setError("Commande introuvable ou vous n'avez pas l'autorisation de la consulter.")
-      } else {
-        setError("Impossible de charger les détails de la commande.")
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const getStatusBadge = (status) => {
     switch(status) {

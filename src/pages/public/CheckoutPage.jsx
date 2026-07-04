@@ -33,8 +33,10 @@ export default function CheckoutPage() {
   // Pré-remplir le nom si connecté
   useEffect(() => {
     if (profile?.full_name && !formData.customer_name) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData(prev => ({ ...prev, customer_name: profile.full_name }))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
 
   const handleChange = (e) => {

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
-import { Mail, Lock, AlertCircle, User } from "lucide-react"
+import { Mail, Lock, AlertCircle } from "lucide-react"
 import { storeConfig } from "@/config/storeConfig"
 
 export default function LoginPage() {
@@ -44,7 +44,9 @@ export default function LoginPage() {
       
       <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white relative z-10">
         <div className="text-center">
-          <img src="/logo.png" alt={storeConfig.storeName} className="h-16 md:h-20 lg:h-24 w-auto object-contain mx-auto mb-6" />
+          <Link to="/" className="inline-block mb-6 hover:opacity-80 transition-opacity">
+            <img src="/logo.png" alt={storeConfig.storeName} className="h-16 md:h-20 lg:h-24 w-auto object-contain mx-auto" />
+          </Link>
           <h2 className="text-3xl font-serif font-bold text-navy mb-2 tracking-tight">Bon retour !</h2>
           <p className="text-sm text-gray-500">
             Connectez-vous à votre espace <span className="font-semibold text-navy">{storeConfig.storeName}</span>
@@ -111,13 +113,18 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="pt-6 mt-6 border-t border-gray-100 text-center text-sm">
-          <p className="text-gray-500">
+        <div className="pt-6 mt-6 border-t border-gray-100 text-center space-y-4">
+          <p className="text-sm text-gray-500">
             Vous n'avez pas encore de compte ?{' '}
             <Link to="/register" className="font-semibold text-navy hover:text-gold transition-colors">
               Créer un compte
             </Link>
           </p>
+          <div className="pt-2">
+            <Link to="/" className="text-xs text-gray-400 hover:text-navy transition-colors inline-flex items-center">
+              ← Retour à la boutique
+            </Link>
+          </div>
         </div>
       </div>
     </div>

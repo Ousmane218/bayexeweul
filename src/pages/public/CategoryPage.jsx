@@ -12,6 +12,7 @@ export default function CategoryPage() {
 
   // Reset page when slug changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPage(1)
   }, [slug])
 
@@ -54,10 +55,17 @@ export default function CategoryPage() {
       {/* En-tête de catégorie */}
       <div className="bg-navy text-white py-12 mb-8">
         <div className="container mx-auto px-4">
-          <Link to="/categories" className="text-gray-400 hover:text-white flex items-center mb-4 text-sm w-fit transition-colors">
-            <ArrowLeft size={16} className="mr-2" />
-            Toutes les catégories
-          </Link>
+          <div className="flex items-center text-sm text-gray-300 mb-6 font-medium">
+            <Link to="/" className="hover:text-white transition-colors flex items-center">
+               Accueil
+            </Link>
+            <span className="mx-2 text-gray-500">/</span>
+            <Link to="/categories" className="hover:text-white transition-colors">
+              Catégories
+            </Link>
+            <span className="mx-2 text-gray-500">/</span>
+            <span className="text-white">{category?.name}</span>
+          </div>
           <h1 className="text-3xl md:text-4xl font-bold font-serif text-gold capitalize">
             {category?.name}
           </h1>

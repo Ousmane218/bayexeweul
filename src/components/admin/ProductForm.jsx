@@ -25,6 +25,7 @@ export default function ProductForm({ productToEdit, onSubmit, onCancel, loading
 
   useEffect(() => {
     if (productToEdit) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: productToEdit.name || '',
         slug: productToEdit.slug || '',

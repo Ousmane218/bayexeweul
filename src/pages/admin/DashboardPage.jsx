@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { supabase } from "@/lib/supabase"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
-import { Clock, CheckCircle2, Truck, XCircle, Package, TrendingUp, AlertTriangle, AlertCircle } from "lucide-react"
+import { Clock, CheckCircle2, Package, TrendingUp, AlertTriangle, AlertCircle } from "lucide-react"
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -15,10 +15,6 @@ export default function DashboardPage() {
   })
   const [recentOrders, setRecentOrders] = useState([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchDashboardData()
-  }, [])
 
   const fetchDashboardData = async () => {
     try {
@@ -81,6 +77,11 @@ export default function DashboardPage() {
     }
   }
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchDashboardData()
+  }, [])
+
   const getStatusBadge = (status) => {
     switch(status) {
       case 'pending': return <span className="px-2 py-1 rounded text-xs font-semibold bg-orange-100 text-orange-700">En attente</span>
@@ -102,6 +103,13 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center text-sm text-gray-500 mb-2 font-medium">
+        <Link to="/" className="hover:text-navy transition-colors">Accueil</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <Link to="/admin" className="hover:text-navy transition-colors">Administration</Link>
+        <span className="mx-2 text-gray-300">/</span>
+        <span className="text-navy">Tableau de bord</span>
+      </div>
       <h1 className="text-3xl font-bold text-navy mb-8">Tableau de bord</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
