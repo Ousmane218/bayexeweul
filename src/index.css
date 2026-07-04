@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-beige: #F5F5DC;
+  --color-beige-100: #FDFDF8;
+  --color-beige-200: #FAF8EB;
+  --color-beige-300: #F5F5DC;
+  
+  --color-gold: #D4AF37;
+  --color-gold-hover: #C5A017;
+  
+  --color-navy: #000080;
+  --color-navy-hover: #000066;
+
+  --color-premium-bg: #FAFAFA;
+  --color-premium-text: #1A1A1A;
+  --color-premium-border: #E5E5E5;
+}
+
+body {
+  @apply bg-premium-bg text-premium-text antialiased;
+}
