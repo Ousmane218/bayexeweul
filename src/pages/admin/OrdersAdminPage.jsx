@@ -99,74 +99,124 @@ export default function OrdersAdminPage() {
       </div>
 
       {/* Liste des commandes */}
-      <div className="bg-white rounded-xl shadow-sm border border-premium-border overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50/50 text-gray-500 font-medium border-b border-gray-100">
-              <tr>
-                <th className="px-6 py-4">Réf.</th>
-                <th className="px-6 py-4">Client</th>
-                <th className="px-6 py-4">Contact</th>
-                <th className="px-6 py-4">Date</th>
-                <th className="px-6 py-4">Montant</th>
-                <th className="px-6 py-4">Statut</th>
-                <th className="px-6 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {loading ? (
+      <div className="w-full">
+        {/* Version Mobile : Cartes */}
+        <div className="md:hidden space-y-4">
+          {loading ? (
+            [...Array(3)].map((_, i) => (
+              <div key={i} className="bg-white rounded-xl shadow-sm border border-premium-border p-4 animate-pulse">
+                <div className="h-4 bg-gray-200 w-1/4 rounded mb-2"></div>
+                <div className="h-5 bg-gray-200 w-1/2 rounded mb-4"></div>
+                <div className="h-8 bg-gray-200 rounded-lg w-full"></div>
+              </div>
+            ))
+          ) : filteredOrders.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-sm border border-premium-border p-8 text-center text-gray-500">
+              <Package size={32} className="mx-auto mb-2 text-gray-300" />
+              <p>Aucune commande trouvée</p>
+            </div>
+          ) : (
+            filteredOrders.map((order) => (
+              <div key={order.id} className="bg-white rounded-xl shadow-sm border border-premium-border p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="font-mono text-xs font-semibold text-gray-500">#{order.id.substring(0, 8).toUpperCase()}</span>
+                    <h4 className="font-bold text-navy mt-1">{order.customer_name}</h4>
+                  </div>
+                  <div>
+                    {getStatusBadge(order.status)}
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center text-sm text-gray-600 border-t border-gray-100 pt-2">
+                  <span>{order.customer_phone}</span>
+                  <span>{new Date(order.created_at).toLocaleDateString('fr-FR')}</span>
+                </div>
+                
+                <div className="flex justify-between items-center mt-2 border-t border-gray-100 pt-3">
+                  <span className="font-bold text-gold text-lg">{order.total_amount.toLocaleString()} FCFA</span>
+                  <Link 
+                    to={`/admin/orders/${order.id}`}
+                    className="inline-flex items-center justify-center text-navy bg-beige-100 hover:bg-beige-200 px-4 py-2 rounded-lg font-medium transition-colors"
+                  >
+                    <Eye size={16} className="mr-1.5" /> Détails
+                  </Link>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Version Desktop : Tableau */}
+        <div className="hidden md:block bg-white rounded-xl shadow-sm border border-premium-border overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-gray-50/50 text-gray-500 font-medium border-b border-gray-100">
                 <tr>
-                  <td colSpan="7" className="px-6 py-12 text-center text-gray-500 bg-white">
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="w-8 h-8 border-4 border-navy border-t-transparent rounded-full animate-spin mb-4"></div>
-                      <p className="font-medium text-navy">Chargement des commandes...</p>
-                    </div>
-                  </td>
+                  <th className="px-6 py-4">Réf.</th>
+                  <th className="px-6 py-4">Client</th>
+                  <th className="px-6 py-4">Contact</th>
+                  <th className="px-6 py-4">Date</th>
+                  <th className="px-6 py-4">Montant</th>
+                  <th className="px-6 py-4">Statut</th>
+                  <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
-              ) : filteredOrders.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="px-6 py-16 text-center bg-gray-50/30">
-                    <div className="flex flex-col items-center justify-center text-gray-400">
-                      <Package size={48} className="mb-4 text-gray-300" />
-                      <p className="text-lg font-medium text-navy">Aucune commande trouvée</p>
-                      <p className="text-sm">Essayez de modifier vos filtres ou termes de recherche.</p>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                filteredOrders.map(order => (
-                  <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 font-mono text-xs font-semibold text-gray-600">
-                      #{order.id.substring(0, 8).toUpperCase()}
-                    </td>
-                    <td className="px-6 py-4 font-medium text-navy">
-                      {order.customer_name}
-                    </td>
-                    <td className="px-6 py-4 text-gray-500">
-                      {order.customer_phone}
-                    </td>
-                    <td className="px-6 py-4 text-gray-500">
-                      {new Date(order.created_at).toLocaleDateString('fr-FR')}
-                    </td>
-                    <td className="px-6 py-4 font-bold text-gold">
-                      {order.total_amount.toLocaleString()} FCFA
-                    </td>
-                    <td className="px-6 py-4">
-                      {getStatusBadge(order.status)}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link 
-                        to={`/admin/orders/${order.id}`}
-                        className="inline-flex items-center text-navy hover:text-gold font-medium bg-gray-50 hover:bg-beige-100 px-3 py-1.5 rounded-lg transition-colors"
-                      >
-                        <Eye size={16} className="mr-1" /> Détails
-                      </Link>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {loading ? (
+                  <tr>
+                    <td colSpan="7" className="px-6 py-12 text-center text-gray-500 bg-white">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="w-8 h-8 border-4 border-navy border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p className="font-medium text-navy">Chargement des commandes...</p>
+                      </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : filteredOrders.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="px-6 py-16 text-center bg-gray-50/30">
+                      <div className="flex flex-col items-center justify-center text-gray-400">
+                        <Package size={48} className="mb-4 text-gray-300" />
+                        <p className="text-lg font-medium text-navy">Aucune commande trouvée</p>
+                        <p className="text-sm">Essayez de modifier vos filtres ou termes de recherche.</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredOrders.map(order => (
+                    <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-6 py-4 font-mono text-xs font-semibold text-gray-600">
+                        #{order.id.substring(0, 8).toUpperCase()}
+                      </td>
+                      <td className="px-6 py-4 font-medium text-navy">
+                        {order.customer_name}
+                      </td>
+                      <td className="px-6 py-4 text-gray-500">
+                        {order.customer_phone}
+                      </td>
+                      <td className="px-6 py-4 text-gray-500">
+                        {new Date(order.created_at).toLocaleDateString('fr-FR')}
+                      </td>
+                      <td className="px-6 py-4 font-bold text-gold">
+                        {order.total_amount.toLocaleString()} FCFA
+                      </td>
+                      <td className="px-6 py-4">
+                        {getStatusBadge(order.status)}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <Link 
+                          to={`/admin/orders/${order.id}`}
+                          className="inline-flex items-center text-navy hover:text-gold font-medium bg-gray-50 hover:bg-beige-100 px-3 py-1.5 rounded-lg transition-colors"
+                        >
+                          <Eye size={16} className="mr-1" /> Détails
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

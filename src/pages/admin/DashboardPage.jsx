@@ -178,40 +178,72 @@ export default function DashboardPage() {
       </div>
       <Card>
         <CardContent className="p-0">
-          <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50 text-gray-500 border-b border-premium-border">
-              <tr>
-                <th className="px-6 py-3 font-medium">Commande</th>
-                <th className="px-6 py-3 font-medium">Client</th>
-                <th className="px-6 py-3 font-medium">Date</th>
-                <th className="px-6 py-3 font-medium">Statut</th>
-                <th className="px-6 py-3 font-medium text-right">Total</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="w-full">
+            {/* Version Mobile : Cartes */}
+            <div className="md:hidden flex flex-col divide-y divide-gray-100">
               {recentOrders.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="px-6 py-8 text-center text-gray-500">Aucune commande récente.</td>
-                </tr>
+                <div className="p-6 text-center text-gray-500">Aucune commande récente.</div>
               ) : (
                 recentOrders.map(order => (
-                  <tr key={order.id} className="border-b border-premium-border hover:bg-gray-50/50">
-                    <td className="px-6 py-4 font-mono font-medium text-navy text-xs">
-                      <Link to={`/admin/orders/${order.id}`} className="hover:text-gold transition-colors">
-                        #{order.id.substring(0,8).toUpperCase()}
-                      </Link>
-                    </td>
-                    <td className="px-6 py-4 font-medium text-gray-700">{order.customer_name}</td>
-                    <td className="px-6 py-4 text-gray-500">
-                      {new Date(order.created_at).toLocaleDateString('fr-FR')}
-                    </td>
-                    <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
-                    <td className="px-6 py-4 text-right font-bold text-navy">{order.total_amount.toLocaleString()} FCFA</td>
-                  </tr>
+                  <div key={order.id} className="p-4 flex flex-col gap-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <Link to={`/admin/orders/${order.id}`} className="font-mono font-semibold text-navy text-xs hover:text-gold transition-colors">
+                          #{order.id.substring(0,8).toUpperCase()}
+                        </Link>
+                        <h4 className="font-bold text-gray-800 text-sm mt-0.5">{order.customer_name}</h4>
+                      </div>
+                      <div>
+                        {getStatusBadge(order.status)}
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString('fr-FR')}</span>
+                      <span className="font-bold text-navy text-sm">{order.total_amount.toLocaleString()} FCFA</span>
+                    </div>
+                  </div>
                 ))
               )}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Version Desktop : Tableau */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="bg-gray-50 text-gray-500 border-b border-premium-border">
+                  <tr>
+                    <th className="px-6 py-3 font-medium">Commande</th>
+                    <th className="px-6 py-3 font-medium">Client</th>
+                    <th className="px-6 py-3 font-medium">Date</th>
+                    <th className="px-6 py-3 font-medium">Statut</th>
+                    <th className="px-6 py-3 font-medium text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentOrders.length === 0 ? (
+                    <tr>
+                      <td colSpan="5" className="px-6 py-8 text-center text-gray-500">Aucune commande récente.</td>
+                    </tr>
+                  ) : (
+                    recentOrders.map(order => (
+                      <tr key={order.id} className="border-b border-premium-border hover:bg-gray-50/50">
+                        <td className="px-6 py-4 font-mono font-medium text-navy text-xs">
+                          <Link to={`/admin/orders/${order.id}`} className="hover:text-gold transition-colors">
+                            #{order.id.substring(0,8).toUpperCase()}
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 font-medium text-gray-700">{order.customer_name}</td>
+                        <td className="px-6 py-4 text-gray-500">
+                          {new Date(order.created_at).toLocaleDateString('fr-FR')}
+                        </td>
+                        <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
+                        <td className="px-6 py-4 text-right font-bold text-navy">{order.total_amount.toLocaleString()} FCFA</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
