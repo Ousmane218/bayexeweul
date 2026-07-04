@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
-import { User, LogOut, Save, X, Package } from "lucide-react"
+import { User, LogOut, Save, X, Package, Heart, ArrowRight } from "lucide-react"
 
 export default function AccountPage() {
   const { profile, user, refreshProfile, signOut } = useAuth()
@@ -62,14 +62,12 @@ export default function AccountPage() {
 
   const handleLogout = async () => {
     await signOut()
-    // Redirect will be handled by ClientProtectedRoute (it checks !user and redirects to /login)
   }
 
   if (!profile && !user) return null
 
   return (
     <div className="bg-premium-bg min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Éléments de décoration */}
       <div className="absolute top-0 right-[-10%] w-[500px] h-[500px] bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-navy/5 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -80,6 +78,13 @@ export default function AccountPage() {
             <p className="text-gray-500">Gérez vos informations personnelles</p>
           </div>
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mt-4 md:mt-0">
+            <Link 
+              to="/account/wishlist"
+              className="w-full md:w-auto flex items-center justify-center text-red-600 bg-white hover:bg-red-50 px-5 py-2.5 rounded-xl shadow-sm border border-red-100 font-medium transition-all"
+            >
+              <Heart size={18} className="mr-2" />
+              Favoris
+            </Link>
             <Link 
               to="/account/orders"
               className="w-full md:w-auto flex items-center justify-center text-navy bg-white hover:bg-gray-50 px-5 py-2.5 rounded-xl shadow-sm border border-gray-200 font-medium transition-all"

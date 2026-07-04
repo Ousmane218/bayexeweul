@@ -1,14 +1,27 @@
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import { useProduct } from "@/hooks/useProduct"
-import { ArrowLeft, ShoppingCart, ShieldCheck, Truck, Star, ImageOff } from "lucide-react"
+import { ArrowLeft, ShoppingCart, ShieldCheck, Truck, Star, ImageOff, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/CartContext"
+import { useWishlist } from "@/context/WishlistContext"
+import { useAuth } from "@/hooks/useAuth"
+import { useSEO } from "@/hooks/useSEO"
 import { storeConfig } from "@/config/storeConfig"
 
 export default function ProductPage() {
   const { id: slugOrId } = useParams() 
   const { product, loading, error } = useProduct(slugOrId)
   const { addToCart } = useCart()
+  const { isInWishlist, toggleWishlist } = useWishlist()
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  useSEO({
+    title: product?.name || "",
+    description: product?.description ? product.description.substring(0, 160) : "",
+    image: product?.image_url,
+    url: window.location.href
+  })
 
   if (loading) {
     return (
@@ -182,6 +195,20 @@ export default function ProductPage() {
                 <Button 
                   size="lg"
                   variant="outline"
+                  onClick={() => {
+                    if (!user) {
+                      navigate('/login')
+                      return
+                    }
+                    toggleWishlist(product.id)
+                  }}
+                  className={`h-14 w-14 p-0 rounded-xl border-2 transition-colors ${isInWishlist(product.id) ? 'border-red-200 bg-red-50 text-red-500' : 'border-navy text-navy hover:bg-beige-100'}`}
+                >
+                  <Heart size={24} className={isInWishlist(product.id) ? "fill-red-500" : ""} />
+                </Button>
+                <Button 
+                  size="lg"
+                  variant="outline"
                   onClick={handleWhatsAppOrder}
                   disabled={product.stock <= 0}
                   className="sm:w-1/3 h-14 text-base font-semibold rounded-xl border-navy text-navy hover:bg-beige-100 disabled:opacity-50"
@@ -200,6 +227,27 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
+      
+      {product && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.name,
+            "image": product.image_url ? [product.image_url] : [],
+            "description": product.description || "",
+            "sku": product.id,
+            "offers": {
+              "@type": "Offer",
+              "url": window.location.href,
+              "priceCurrency": "XOF",
+              "price": product.price,
+              "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              "itemCondition": "https://schema.org/NewCondition"
+            }
+          })}
+        </script>
+      )}
     </div>
   )
 }

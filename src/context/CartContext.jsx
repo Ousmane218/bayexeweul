@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react'
+import { useToast } from './ToastContext'
 
 const CartContext = createContext()
 
@@ -16,6 +17,8 @@ export function CartProvider({ children }) {
     return []
   })
 
+  const { addToast } = useToast()
+
   // Sauvegarde dans le localStorage à chaque changement du panier
   useEffect(() => {
     localStorage.setItem('bayexeweul_cart', JSON.stringify(cartItems))
@@ -23,7 +26,7 @@ export function CartProvider({ children }) {
 
   const addToCart = (product, quantity = 1) => {
     if (product.stock <= 0) {
-      alert("Ce produit est actuellement en rupture de stock.")
+      addToast("Ce produit est actuellement en rupture de stock.", "error")
       return
     }
 
@@ -32,16 +35,14 @@ export function CartProvider({ children }) {
       
       if (existingItem) {
         // Vérifier si la nouvelle quantité dépasse le stock
-        const newQuantity = existingItem.quantity + quantity
-        if (newQuantity > product.stock) {
-          alert(`Désolé, il ne reste que ${product.stock} article(s) en stock pour ce produit.`)
-          return prev.map(item => 
-            item.id === product.id ? { ...item, quantity: product.stock } : item
-          )
+        if (existingItem.quantity >= product.stock) {
+          addToast(`Désolé, il ne reste que ${product.stock} article(s) en stock pour ce produit.`, "warning")
+          return prev
         }
         
+        const newQuantity = existingItem.quantity + quantity
         return prev.map(item => 
-          item.id === product.id ? { ...item, quantity: newQuantity } : item
+          item.id === product.id ? { ...item, quantity: Math.min(newQuantity, product.stock) } : item
         )
       }
       
@@ -59,10 +60,11 @@ export function CartProvider({ children }) {
     setCartItems(prev => prev.map(item => {
       if (item.id === productId) {
         // Ne pas dépasser le stock et ne pas descendre en dessous de 1
-        const validQuantity = Math.min(Math.max(1, quantity), item.stock)
         if (quantity > item.stock) {
-           alert(`Désolé, il ne reste que ${item.stock} article(s) en stock.`)
+           addToast(`Désolé, il ne reste que ${item.stock} article(s) en stock.`, "warning")
+           return item
         }
+        const validQuantity = Math.max(1, quantity)
         return { ...item, quantity: validQuantity }
       }
       return item

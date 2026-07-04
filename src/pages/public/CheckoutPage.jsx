@@ -96,9 +96,6 @@ export default function CheckoutPage() {
         whatsapp_sent: false
       }
 
-      console.log("Current user for order:", authUser || user)
-      console.log("Order payload:", orderPayload)
-
       // 2. Créer la commande
       const { error: orderError } = await supabase
         .from('orders')

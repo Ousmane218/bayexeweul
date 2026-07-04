@@ -46,18 +46,27 @@ export default function CategoriesPage() {
                 to={`/category/${cat.slug}`}
                 className="group relative h-64 bg-white rounded-xl overflow-hidden flex flex-col items-center justify-center border border-premium-border hover:shadow-lg hover:border-navy transition-all duration-300"
               >
-                {/* 
-                  Décoration d'arrière-plan pour un look premium
-                */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-beige-100 group-hover:scale-105 transition-transform duration-500 -z-10"></div>
-                
-                <div className="w-16 h-16 bg-white shadow-sm rounded-full flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-colors duration-300 mb-4 z-10">
-                  <LayoutGrid size={28} />
-                </div>
-                
-                <h3 className="text-xl font-serif font-bold text-navy group-hover:text-gold transition-colors z-10 text-center px-4">
-                  {cat.name}
-                </h3>
+                {cat.image_url ? (
+                  <>
+                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${cat.image_url})` }}></div>
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+                    <h3 className="relative text-2xl font-serif font-bold text-white z-10 text-center px-4 drop-shadow-md">
+                      {cat.name}
+                    </h3>
+                  </>
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-beige-100 group-hover:scale-105 transition-transform duration-500 -z-10"></div>
+                    
+                    <div className="w-16 h-16 bg-white shadow-sm rounded-full flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-colors duration-300 mb-4 z-10">
+                      <LayoutGrid size={28} />
+                    </div>
+                    
+                    <h3 className="text-xl font-serif font-bold text-navy group-hover:text-gold transition-colors z-10 text-center px-4">
+                      {cat.name}
+                    </h3>
+                  </>
+                )}
               </Link>
             ))}
           </div>

@@ -1,16 +1,25 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
-import { ShoppingCart, ImageOff } from "lucide-react"
+import { ShoppingCart, ImageOff, Heart } from "lucide-react"
 import { useCart } from "@/context/CartContext"
+import { useWishlist } from "@/context/WishlistContext"
+import { useToast } from "@/context/ToastContext"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart()
+  const { isInWishlist, toggleWishlist } = useWishlist()
+  const { addToast } = useToast()
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  
+  const isWishlisted = isInWishlist(product.id)
 
   const handleAddToCart = (e) => {
     e.preventDefault()
     e.stopPropagation()
     if (product.stock <= 0) {
-      alert("Produit en rupture de stock")
+      addToast("Produit en rupture de stock", "error")
       return
     }
     addToCart(product)
@@ -25,6 +34,7 @@ export default function ProductCard({ product }) {
               <img 
                 src={product.image_url} 
                 alt={product.name} 
+                loading="lazy"
                 className={`w-full h-full object-cover transition-transform duration-500 ${product.stock > 0 ? 'group-hover:scale-105' : 'grayscale-[50%]'}`}
               />
             ) : (
@@ -41,7 +51,7 @@ export default function ProductCard({ product }) {
             )}
             
             {product.is_featured && (
-              <div className="absolute top-2 right-2 bg-gold text-white text-[10px] font-bold px-2 py-1 rounded z-10 shadow-sm">
+              <div className="absolute top-2 left-2 mt-8 bg-gold text-white text-[10px] font-bold px-2 py-1 rounded z-10 shadow-sm">
                 En vedette
               </div>
             )}
@@ -51,6 +61,22 @@ export default function ProductCard({ product }) {
                 Rupture de stock
               </div>
             )}
+            
+            {/* Bouton Wishlist */}
+            <button 
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                if (!user) {
+                  navigate('/login')
+                  return
+                }
+                toggleWishlist(product.id)
+              }}
+              className={`absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow-sm z-20 hover:scale-110 active:scale-95 ${isWishlisted ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+            >
+              <Heart size={16} className={isWishlisted ? "fill-red-500 text-red-500" : "text-gray-500 hover:text-red-500"} />
+            </button>
           </div>
           <div className="p-4 flex flex-col flex-grow justify-between">
             <div>

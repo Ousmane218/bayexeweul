@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import { Edit, Trash2, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
 export default function CategoryTable({ categories, onEdit, onDelete, onToggleStatus, loading }) {
+  const [categoryToDelete, setCategoryToDelete] = useState(null)
+
   if (loading) {
     return (
       <div className="bg-white rounded-xl border border-premium-border p-8 flex justify-center">
@@ -79,11 +83,7 @@ export default function CategoryTable({ categories, onEdit, onDelete, onToggleSt
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      onClick={() => {
-                        if (window.confirm(`Êtes-vous sûr de vouloir supprimer la catégorie "${category.name}" ?`)) {
-                          onDelete(category.id)
-                        }
-                      }}
+                      onClick={() => setCategoryToDelete(category)}
                       className="h-8 w-8 p-0 text-red-600 hover:bg-red-50 hover:text-red-700"
                     >
                       <Trash2 size={14} />
@@ -95,6 +95,17 @@ export default function CategoryTable({ categories, onEdit, onDelete, onToggleSt
           </tbody>
         </table>
       </div>
+
+      <ConfirmDialog 
+        isOpen={!!categoryToDelete}
+        onClose={() => setCategoryToDelete(null)}
+        onConfirm={() => {
+          if (categoryToDelete) onDelete(categoryToDelete.id)
+        }}
+        title="Supprimer la catégorie"
+        message={`Êtes-vous sûr de vouloir supprimer la catégorie "${categoryToDelete?.name}" ? Cette action est irréversible.`}
+        confirmText="Supprimer"
+      />
     </div>
   )
 }

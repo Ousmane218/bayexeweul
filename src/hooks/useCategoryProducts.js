@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 
-export function useCategoryProducts(categorySlug) {
+export function useCategoryProducts(categorySlug, page = 1, pageSize = 24) {
   const [products, setProducts] = useState([])
   const [category, setCategory] = useState(null)
+  const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -32,8 +33,11 @@ export function useCategoryProducts(categorySlug) {
 
         setCategory(catData)
 
-        // 2. Trouver les produits
-        const { data: prodData, error: prodError } = await supabase
+        // 2. Trouver les produits avec pagination
+        const from = (page - 1) * pageSize
+        const to = from + pageSize - 1
+
+        const { data: prodData, error: prodError, count } = await supabase
           .from('products')
           .select(`
             *,
@@ -42,14 +46,16 @@ export function useCategoryProducts(categorySlug) {
               name,
               slug
             )
-          `)
+          `, { count: 'exact' })
           .eq('category_id', catData.id)
           .eq('is_active', true)
           .order('created_at', { ascending: false })
+          .range(from, to)
 
         if (prodError) throw prodError
         
         setProducts(prodData || [])
+        setTotalCount(count || 0)
       } catch (err) {
         console.error('Erreur useCategoryProducts:', err.message)
         setError(err.message)
@@ -59,7 +65,9 @@ export function useCategoryProducts(categorySlug) {
     }
 
     fetchCategoryAndProducts()
-  }, [categorySlug])
+  }, [categorySlug, page, pageSize])
 
-  return { category, products, loading, error }
+  const totalPages = Math.ceil(totalCount / pageSize)
+
+  return { category, products, totalCount, totalPages, loading, error }
 }

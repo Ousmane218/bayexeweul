@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Interdire l'accès aux pages sensibles ou non pertinentes pour les moteurs de recherche
+Disallow: /admin
+Disallow: /account
+Disallow: /checkout
+Disallow: /cart
+
+Sitemap: https://bayexeweul.com/sitemap.xml

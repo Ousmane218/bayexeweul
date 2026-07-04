@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Plus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAdminCategories } from "@/hooks/useAdminCategories"
+import { useToast } from "@/context/ToastContext"
 import CategoryTable from "@/components/admin/CategoryTable"
 import CategoryForm from "@/components/admin/CategoryForm"
 
@@ -20,6 +21,7 @@ export default function CategoriesAdminPage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState(null)
   const [searchTerm, setSearchTerm] = useState("")
+  const { addToast } = useToast()
 
   useEffect(() => {
     fetchCategories()
@@ -45,15 +47,18 @@ export default function CategoriesAdminPage() {
 
     if (res.success) {
       handleCloseForm()
+      addToast(editingCategory ? "Catégorie modifiée" : "Catégorie ajoutée", "success")
     } else {
-      alert("Erreur: " + res.error)
+      addToast("Erreur: " + res.error, "error")
     }
   }
 
   const handleDelete = async (id) => {
     const res = await deleteCategory(id)
-    if (!res.success) {
-      alert(res.error) // Affiche le message d'erreur si lié à des produits
+    if (res.success) {
+      addToast("Catégorie supprimée", "success")
+    } else {
+      addToast(res.error, "error")
     }
   }
 

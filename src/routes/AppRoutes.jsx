@@ -21,6 +21,7 @@ import RegisterPage from "@/pages/public/auth/RegisterPage"
 import AccountPage from "@/pages/public/account/AccountPage"
 import ClientOrdersPage from "@/pages/public/account/ClientOrdersPage"
 import ClientOrderDetailPage from "@/pages/public/account/ClientOrderDetailPage"
+import ClientWishlistPage from "@/pages/public/account/ClientWishlistPage"
 import CheckoutPage from "@/pages/public/CheckoutPage"
 
 // Admin Pages
@@ -52,6 +53,7 @@ export default function AppRoutes() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/account/orders" element={<ClientOrdersPage />} />
           <Route path="/account/orders/:id" element={<ClientOrderDetailPage />} />
+          <Route path="/account/wishlist" element={<ClientWishlistPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

@@ -3,6 +3,7 @@ import { Search, ShoppingCart, Menu, User, Heart, Phone, LogOut, Shield } from "
 import { useCategories } from "@/hooks/useCategories"
 import { useCart } from "@/context/CartContext"
 import { useAuth } from "@/hooks/useAuth"
+import { useWishlist } from "@/context/WishlistContext"
 import { useState } from "react"
 import { storeConfig } from "@/config/storeConfig"
 
@@ -10,9 +11,12 @@ export default function PublicLayout() {
   const { categories } = useCategories()
   const { cartCount } = useCart()
   const { user, profile, signOut } = useAuth()
+  const { wishlistItems } = useWishlist()
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState("")
   const [showUserMenu, setShowUserMenu] = useState(false)
+  
+  const wishlistItemCount = wishlistItems.length
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -114,8 +118,15 @@ export default function PublicLayout() {
                 )}
               </div>
             )}
-            <Link to="#" className="flex flex-col items-center text-navy hover:text-gold transition-colors">
-              <Heart size={22} strokeWidth={1.5} />
+            <Link to={user ? "/account/wishlist" : "/login"} className="flex flex-col items-center text-navy hover:text-gold transition-colors relative">
+              <div className="relative">
+                <Heart size={22} strokeWidth={1.5} />
+                {wishlistItemCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                    {wishlistItemCount}
+                  </span>
+                )}
+              </div>
               <span className="text-[10px] hidden md:block mt-1 font-medium">Favoris</span>
             </Link>
             <Link to="/cart" className="flex flex-col items-center text-navy hover:text-gold transition-colors relative">

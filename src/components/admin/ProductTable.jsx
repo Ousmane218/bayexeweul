@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Edit, Trash2, PackageSearch, ImageOff } from 'lucide-react'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
 export default function ProductTable({ products, loading, error, onEdit, onDelete, onToggleStatus }) {
+  const [productToDelete, setProductToDelete] = useState(null)
   
   if (error) {
     return (
@@ -53,9 +55,7 @@ export default function ProductTable({ products, loading, error, onEdit, onDelet
   }
 
   const handleDeleteClick = (product) => {
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer le produit "${product.name}" ?\nCette action est irréversible.`)) {
-      onDelete(product.id, product.image_url)
-    }
+    setProductToDelete(product)
   }
 
   return (
@@ -136,6 +136,17 @@ export default function ProductTable({ products, loading, error, onEdit, onDelet
           ))}
         </tbody>
       </table>
+      
+      <ConfirmDialog 
+        isOpen={!!productToDelete}
+        onClose={() => setProductToDelete(null)}
+        onConfirm={() => {
+          if (productToDelete) onDelete(productToDelete.id, productToDelete.image_url)
+        }}
+        title="Supprimer le produit"
+        message={`Êtes-vous sûr de vouloir supprimer le produit "${productToDelete?.name}" ? Cette action est irréversible.`}
+        confirmText="Supprimer"
+      />
     </div>
   )
 }

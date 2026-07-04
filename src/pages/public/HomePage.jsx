@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCategories } from "@/hooks/useCategories"
 import { useProducts } from "@/hooks/useProducts"
+import { useSEO } from "@/hooks/useSEO"
 import ProductCard from "@/components/product/ProductCard"
 import { 
   Truck, ShieldCheck, ThumbsUp, Headset,
@@ -17,6 +18,11 @@ import { Tag } from "lucide-react"
 import { storeConfig } from "@/config/storeConfig"
 
 export default function HomePage() {
+  useSEO({
+    title: "",
+    description: "Découvrez nos produits aux meilleurs prix. BAYEXÉWEUL, votre marketplace de confiance au Sénégal."
+  })
+
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategories()
   const { products, loading: productsLoading, error: productsError } = useProducts({ limit: 12 })
 

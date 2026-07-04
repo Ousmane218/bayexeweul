@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCategories } from '@/hooks/useCategories'
+import { useToast } from '@/context/ToastContext'
 import { ImagePlus, X, Loader2 } from 'lucide-react'
 
 export default function ProductForm({ productToEdit, onSubmit, onCancel, loading }) {
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategories()
-  
-  console.log("Categories in ProductForm:", categories)
+  const { addToast } = useToast()
   
   const [formData, setFormData] = useState({
     name: '',
@@ -79,9 +79,9 @@ export default function ProductForm({ productToEdit, onSubmit, onCancel, loading
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Validation basique
+    
     if (!formData.name || !formData.price || !formData.category_id) {
-      alert("Veuillez remplir les champs obligatoires (Nom, Prix, Catégorie).")
+      addToast("Veuillez remplir les champs obligatoires (Nom, Prix, Catégorie).", "error")
       return
     }
     

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Plus, ArrowLeft } from "lucide-react"
 import { useAdminProducts } from "@/hooks/useAdminProducts"
+import { useToast } from "@/context/ToastContext"
 import ProductTable from "@/components/admin/ProductTable"
 import ProductForm from "@/components/admin/ProductForm"
 
@@ -20,6 +21,7 @@ export default function ProductsAdminPage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [productToEdit, setProductToEdit] = useState(null)
   const [actionLoading, setActionLoading] = useState(false)
+  const { addToast } = useToast()
 
   const handleOpenForm = (product = null) => {
     setProductToEdit(product)
@@ -40,16 +42,22 @@ export default function ProductsAdminPage() {
         await addProduct(productData, imageFile)
       }
       handleCloseForm()
+      addToast(productToEdit ? "Produit modifié avec succès" : "Produit ajouté avec succès", "success")
     } catch (err) {
       console.error(err)
-      alert("Une erreur est survenue.")
+      addToast("Une erreur est survenue.", "error")
     } finally {
       setActionLoading(false)
     }
   }
 
   const handleDelete = async (id, imageUrl) => {
-    await deleteProduct(id, imageUrl)
+    try {
+      await deleteProduct(id, imageUrl)
+      addToast("Produit supprimé avec succès", "success")
+    } catch (err) {
+      addToast("Erreur lors de la suppression du produit", "error")
+    }
   }
 
   const handleToggleStatus = async (id, field, value) => {
