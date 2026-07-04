@@ -44,9 +44,7 @@ export default function LoginPage() {
       
       <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white relative z-10">
         <div className="text-center">
-          <div className="w-16 h-16 bg-navy text-gold rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-            <User size={32} />
-          </div>
+          <img src="/logo.png" alt={storeConfig.storeName} className="h-16 md:h-20 lg:h-24 w-auto object-contain mx-auto mb-6" />
           <h2 className="text-3xl font-serif font-bold text-navy mb-2 tracking-tight">Bon retour !</h2>
           <p className="text-sm text-gray-500">
             Connectez-vous à votre espace <span className="font-semibold text-navy">{storeConfig.storeName}</span>

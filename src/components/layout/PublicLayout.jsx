@@ -50,10 +50,10 @@ export default function PublicLayout() {
 
       {/* Main Header */}
       <header className="bg-white border-b border-premium-border sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-4">
+        <div className="container mx-auto px-4 py-3 min-h-[5rem] flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="text-2xl md:text-3xl font-serif font-bold text-navy tracking-tight shrink-0 uppercase">
-            {storeConfig.storeName}
+          <Link to="/" className="shrink-0 flex items-center">
+            <img src="/logo.png" alt={storeConfig.storeName} className="h-12 md:h-16 lg:h-20 w-auto object-contain scale-110 origin-left" />
           </Link>
 
           {/* Search Bar - Center */}
@@ -189,7 +189,7 @@ export default function PublicLayout() {
       <footer className="bg-navy text-white pt-16 pb-8 mt-12">
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
-            <h3 className="text-xl font-serif font-bold text-gold mb-6 uppercase">{storeConfig.storeName}</h3>
+            <img src="/logo.png" alt={storeConfig.storeName} className="h-16 md:h-20 lg:h-24 w-auto object-contain mb-6" />
             <p className="text-sm text-gray-300 leading-relaxed">
               {storeConfig.tagline}
             </p>

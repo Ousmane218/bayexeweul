@@ -36,9 +36,8 @@ export default function AdminLayout() {
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         <div className="h-20 flex items-center justify-between px-4 border-b border-gray-800">
-          <Link to="/" className="text-xl font-serif font-bold text-gold tracking-widest uppercase ml-4 lg:ml-0">
-            BAYEXÉWEUL
-            <span className="block text-[10px] text-gray-400 font-sans tracking-normal mt-1">Admin Panel</span>
+          <Link to="/" className="flex items-center ml-4 lg:ml-0">
+            <img src="/logo.png" alt="BAYEXÉWEUL" className="h-12 md:h-16 w-auto object-contain scale-110 origin-left" />
           </Link>
           <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-gray-400 hover:text-white p-2">
             <X size={24} />

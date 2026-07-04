@@ -74,7 +74,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-premium-bg">
       <div className="max-w-md w-full bg-white p-8 border border-premium-border shadow-sm rounded-lg">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-serif font-bold text-navy tracking-widest uppercase mb-2">Bayexéweul</h1>
+          <img src="/logo.png" alt="BAYEXÉWEUL" className="h-16 md:h-20 lg:h-24 w-auto object-contain mx-auto mb-4 scale-110" />
           <p className="text-gray-500">Connexion Espace Admin</p>
         </div>
         
